@@ -1,0 +1,47 @@
+{
+  "project_info": {
+    "project_number": "589809574578",
+    "project_id": "chatfutter-2feaa",
+    "storage_bucket": "chatfutter-2feaa.appspot.com"
+  },
+  "client": [
+    {
+      "client_info": {
+        "mobilesdk_app_id": "1:589809574578:android:19f9f167e97c751e065fab",
+        "android_client_info": {
+          "package_name": "com.example.chatonlinefirebase.chatonlinefirebase"
+        }
+      },
+      "oauth_client": [
+        {
+          "client_id": "589809574578-m79sa2hcsj85q5s6tqms2g55gonmcreq.apps.googleusercontent.com",
+          "client_type": 1,
+          "android_info": {
+            "package_name": "com.example.chatonlinefirebase.chatonlinefirebase",
+            "certificate_hash": "64a033d64596b962be679b74d8a17feefdd993b3"
+          }
+        },
+        {
+          "client_id": "589809574578-ai27c2gidfdampr0bs5s2h1p127doff6.apps.googleusercontent.com",
+          "client_type": 3
+        }
+      ],
+      "api_key": [
+        {
+          "current_key": "AIzaSyAK_cW9h24-63YaV6iLHjFFB6a_oXq1P1I"
+        }
+      ],
+      "services": {
+        "appinvite_service": {
+          "other_platform_oauth_client": [
+            {
+              "client_id": "589809574578-ai27c2gidfdampr0bs5s2h1p127doff6.apps.googleusercontent.com",
+              "client_type": 3
+            }
+          ]
+        }
+      }
+    }
+  ],
+  "configuration_version": "1"
+}
