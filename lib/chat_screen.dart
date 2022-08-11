@@ -31,37 +31,33 @@ class _ChatScreenState extends State<ChatScreen> {
 
 
       final storageRef = FirebaseStorage.instance.ref();
+      if(imgFile != null) {
+        try {
+          final Ref = storageRef.child(imgFile.path);
 
-      try {
-        final Ref = storageRef.child(imgFile.path);
+          await Ref.putFile(
+              File(imgFile.path),
+              SettableMetadata(customMetadata: {
+                'uploaded_by': 'Teste Cap',
+                'description': 'Imagem...'
+              }));
+            // Refresh the UI
+            setState(() {});
+          } on FirebaseException catch (error) {
+            if (kDebugMode) {
+              print(error);
+            }
+          }
 
-        await Ref.putFile(
-            File(imgFile.path),
-            SettableMetadata(customMetadata: {
-              'uploaded_by': 'Teste Cap',
-              'description': 'Imagem...'
-            }));
+          String url = await Ref.getDownloadURL();
 
-        String url = await Ref.getDownloadURL();
+          data['imgUrl'] = url;
+        }
 
         if(text != null) data['text'] = text;
 
-        data['imgUrl'] = url;
-
         FirebaseFirestore.instance.collection("message").add(data);
-
-        // Refresh the UI
-        setState(() {});
-      } on FirebaseException catch (error) {
-        if (kDebugMode) {
-          print(error);
-        }
-      }
     }
-
-    FirebaseFirestore.instance.collection("message").add({
-      'text':text
-    });
   }
 
   @override
@@ -73,6 +69,32 @@ class _ChatScreenState extends State<ChatScreen> {
       ),
       body: Column(
         children: <Widget>[
+          Expanded(
+              child: StreamBuilder<QuerySnapshot>(
+                stream: FirebaseFirestore.instance.collection("message").snapshots(),
+                builder: (context, snapshot) {
+                  switch(snapshot.connectionState) {
+                    case ConnectionState.none:
+                    case ConnectionState.waiting:
+                      return Center(
+                        child: CircularProgressIndicator(),
+                      );
+                    default:
+                      List<DocumentSnapshot> documents = snapshot.data!.docs;
+
+                      return ListView.builder(
+                        itemCount: documents.length,
+                        reverse: true,
+                        itemBuilder: (context, index) {
+                          return ListTile(
+                            title: Text(documents[index].data().toString()),
+                          )
+                        }
+                      );
+                  }
+                },
+              )
+          ),
           TextComposer(_sendMessage),
         ],
       ),
