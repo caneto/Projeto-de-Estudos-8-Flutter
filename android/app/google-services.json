@@ -1,42 +1,85 @@
 {
   "project_info": {
-    "project_number": "589809574578",
-    "project_id": "chatfutter-2feaa",
-    "storage_bucket": "chatfutter-2feaa.appspot.com"
+    "project_number": "1012679868774",
+    "project_id": "chatflutter-d8a07",
+    "storage_bucket": "chatflutter-d8a07.appspot.com"
   },
   "client": [
     {
       "client_info": {
-        "mobilesdk_app_id": "1:589809574578:android:19f9f167e97c751e065fab",
+        "mobilesdk_app_id": "1:1012679868774:android:2bdad1cc08a0de362688a7",
         "android_client_info": {
-          "package_name": "com.example.chatonlinefirebase.chatonlinefirebase"
+          "package_name": "com.example.chatonlinefirebase"
         }
       },
       "oauth_client": [
         {
-          "client_id": "589809574578-m79sa2hcsj85q5s6tqms2g55gonmcreq.apps.googleusercontent.com",
+          "client_id": "1012679868774-tb2vi2l0b6fuqeea3los6m2khil4gfqg.apps.googleusercontent.com",
           "client_type": 1,
           "android_info": {
-            "package_name": "com.example.chatonlinefirebase.chatonlinefirebase",
+            "package_name": "com.example.chatonlinefirebase",
             "certificate_hash": "64a033d64596b962be679b74d8a17feefdd993b3"
           }
         },
         {
-          "client_id": "589809574578-ai27c2gidfdampr0bs5s2h1p127doff6.apps.googleusercontent.com",
+          "client_id": "1012679868774-m117gns4knmhj3ubuelm0s8fr7eb3h4a.apps.googleusercontent.com",
           "client_type": 3
         }
       ],
       "api_key": [
         {
-          "current_key": "AIzaSyAK_cW9h24-63YaV6iLHjFFB6a_oXq1P1I"
+          "current_key": "AIzaSyAI1_7pM_z4P3xj5PAfeg39s5PsYBfrp5g"
         }
       ],
       "services": {
         "appinvite_service": {
           "other_platform_oauth_client": [
             {
-              "client_id": "589809574578-ai27c2gidfdampr0bs5s2h1p127doff6.apps.googleusercontent.com",
+              "client_id": "1012679868774-m117gns4knmhj3ubuelm0s8fr7eb3h4a.apps.googleusercontent.com",
               "client_type": 3
+            },
+            {
+              "client_id": "1012679868774-iu3ig22fhnljjo65jbmkqgcjhfsj9fi8.apps.googleusercontent.com",
+              "client_type": 2,
+              "ios_info": {
+                "bundle_id": "com.example.chatonlinefirebase.chatonlinefirebase"
+              }
+            }
+          ]
+        }
+      }
+    },
+    {
+      "client_info": {
+        "mobilesdk_app_id": "1:1012679868774:android:9878f2c5261e65cd2688a7",
+        "android_client_info": {
+          "package_name": "com.example.chatonlinefirebase.chatonlinefirebase"
+        }
+      },
+      "oauth_client": [
+        {
+          "client_id": "1012679868774-m117gns4knmhj3ubuelm0s8fr7eb3h4a.apps.googleusercontent.com",
+          "client_type": 3
+        }
+      ],
+      "api_key": [
+        {
+          "current_key": "AIzaSyAI1_7pM_z4P3xj5PAfeg39s5PsYBfrp5g"
+        }
+      ],
+      "services": {
+        "appinvite_service": {
+          "other_platform_oauth_client": [
+            {
+              "client_id": "1012679868774-m117gns4knmhj3ubuelm0s8fr7eb3h4a.apps.googleusercontent.com",
+              "client_type": 3
+            },
+            {
+              "client_id": "1012679868774-iu3ig22fhnljjo65jbmkqgcjhfsj9fi8.apps.googleusercontent.com",
+              "client_type": 2,
+              "ios_info": {
+                "bundle_id": "com.example.chatonlinefirebase.chatonlinefirebase"
+              }
             }
           ]
         }
