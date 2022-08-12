@@ -8,8 +8,6 @@ import 'firebase_options.dart';
 
 
 Future<void> main() async {
-  runApp(const MyApp());
-
 
   WidgetsFlutterBinding.ensureInitialized();
   await Firebase.initializeApp();
@@ -19,7 +17,7 @@ Future<void> main() async {
   //});
 
   //FirebaseFirestore.instance.collection("col").doc("doc").set({"texto": "Carlos"});
-
+  runApp(const MyApp());
 
 }
 

@@ -2,9 +2,11 @@ import 'dart:io';
 
 import 'package:chatonlinefirebase/text_composer.dart';
 import 'package:cloud_firestore/cloud_firestore.dart';
+import 'package:firebase_auth/firebase_auth.dart';
 import 'package:firebase_storage/firebase_storage.dart';
 import 'package:flutter/foundation.dart';
 import 'package:flutter/material.dart';
+import 'package:google_sign_in/google_sign_in.dart';
 import 'package:image_picker/image_picker.dart';
 
 class ChatScreen extends StatefulWidget {
@@ -16,53 +18,89 @@ class ChatScreen extends StatefulWidget {
 
 class _ChatScreenState extends State<ChatScreen> {
 
+  final GoogleSignIn googleSignIn = GoogleSignIn();
+  final GlobalKey<ScaffoldState> _globalKey = GlobalKey<ScaffoldState>();
 
+  Future<User> _getUser() async {
+    try {
+      final GoogleSignInAccount? googleSignInAccount = await googleSignIn.signIn();
+      final GoogleSignInAuthentication? googleSignInAuthentication = await googleSignInAccount?.authentication;
+
+      final AuthCredential credential = GoogleAuthProvider.credential(
+        idToken: googleSignInAuthentication?.idToken,
+        accessToken: googleSignInAuthentication?.accessToken,
+      );
+
+      final UserCredential authResult = await FirebaseAuth.instance.signInWithCredential(credential);
+
+      final User? user = authResult.user;
+
+      return user!;
+    } catch (error) {
+      return null!;
+    }
+  }
 
   //final Reference ref = FirebaseStorage.instance
   //    .ref();
 
   Future<void> _sendMessage({String? text, XFile? imgFile}) async {
 
-    Map<String, dynamic> data = {};
+    final User? user = await _getUser();
 
-    FirebaseStorage storage = FirebaseStorage.instance;
+    if(user == null) {
+      _globalKey.currentState?.showSnackBar(
+        SnackBar(
+          content: Text("Não foi possivel fazer o login. Tente novamente!"),
+          backgroundColor: Colors.red,
+        )
+      );
+    }
+
+    Map<String, dynamic> data = {
+      'uId': user?.uid,
+      'senderUser': user?.displayName,
+      'senderPhotoUrl': user?.photoURL
+    };
+
+    //FirebaseStorage storage = FirebaseStorage.instance;
 
     if(imgFile != null) {
-
-
       final storageRef = FirebaseStorage.instance.ref();
-      if(imgFile != null) {
-        try {
-          final Ref = storageRef.child(imgFile.path);
 
-          await Ref.putFile(
-              File(imgFile.path),
-              SettableMetadata(customMetadata: {
-                'uploaded_by': 'Teste Cap',
-                'description': 'Imagem...'
-              }));
-            // Refresh the UI
-            setState(() {});
-          } on FirebaseException catch (error) {
-            if (kDebugMode) {
-              print(error);
-            }
-          }
+      final ref = storageRef.child(imgFile.path);
 
-          String url = await Ref.getDownloadURL();
+      try {
 
-          data['imgUrl'] = url;
+        await ref.putFile(
+            File(imgFile.path),
+            SettableMetadata(customMetadata: {
+              'uploaded_by': 'Teste Cap',
+              'description': 'Imagem...'
+            }));
+          // Refresh the UI
+          setState(() {});
+      } on FirebaseException catch (error) {
+        if (kDebugMode) {
+          print(error);
         }
+      }
 
-        if(text != null) data['text'] = text;
+      String url = await ref.getDownloadURL();
 
-        FirebaseFirestore.instance.collection("message").add(data);
-    }
+      data['imgUrl'] = url;
+   }
+
+   if(text != null) data['text'] = text;
+
+   FirebaseFirestore.instance.collection("message").add(data);
+
   }
 
   @override
   Widget build(BuildContext context) {
     return Scaffold(
+      key: _globalKey,
       appBar: AppBar(
         title: Text("Usuario"),
         elevation: 0,
@@ -88,7 +126,7 @@ class _ChatScreenState extends State<ChatScreen> {
                         itemBuilder: (context, index) {
                           return ListTile(
                             title: Text(documents[index].data().toString()),
-                          )
+                          );
                         }
                       );
                   }
