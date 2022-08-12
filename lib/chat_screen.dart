@@ -22,6 +22,15 @@ class _ChatScreenState extends State<ChatScreen> {
   final GoogleSignIn googleSignIn = GoogleSignIn();
   final GlobalKey<ScaffoldState> _globalKey = GlobalKey<ScaffoldState>();
 
+  User? _user;
+
+  @override
+  void initState() {
+    FirebaseAuth.instance.authStateChanges().listen((user) {
+      _user = user;
+    });
+  }
+
   Future<User> _getUser() async {
     try {
       final GoogleSignInAccount? googleSignInAccount = await googleSignIn.signIn();
@@ -103,8 +112,24 @@ class _ChatScreenState extends State<ChatScreen> {
     return Scaffold(
       key: _globalKey,
       appBar: AppBar(
-        title: Text("Usuario"),
+        title: Text(
+            _user != null ? 'Olá, ${_user?.displayName}' : 'Chat App'
+        ),
         elevation: 0,
+        actions: <Widget>[
+          _user != null ? IconButton(
+              onPressed: () {
+                FirebaseAuth.instance.signOut();
+                googleSignIn.signOut();
+                _globalKey.currentState?.showSnackBar(
+                  SnackBar(
+                    content: Text("Você saiu com sucesso!"),
+                  )
+                );
+              },
+              icon: Icon(Icons.exit_to_app)
+          ): Container()
+        ],
       ),
       body: Column(
         children: <Widget>[
@@ -119,13 +144,13 @@ class _ChatScreenState extends State<ChatScreen> {
                         child: CircularProgressIndicator(),
                       );
                     default:
-                      List<DocumentSnapshot> documents = snapshot.data!.docs;
+                      List<DocumentSnapshot> documents = snapshot.data!.docs.reversed.toList();
 
                       return ListView.builder(
                         itemCount: documents.length,
                         reverse: true,
                         itemBuilder: (context, index) {
-                          return ChatMessage(documents[index].data());
+                          return ChatMessage(documents[index].data() as Map<String, dynamic>, true);
                         }
                       );
                   }
