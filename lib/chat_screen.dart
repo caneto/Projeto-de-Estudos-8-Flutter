@@ -23,6 +23,7 @@ class _ChatScreenState extends State<ChatScreen> {
   final GlobalKey<ScaffoldState> _globalKey = GlobalKey<ScaffoldState>();
 
   User? _user;
+  bool _isLoading = false;
 
   @override
   void initState() {
@@ -70,7 +71,8 @@ class _ChatScreenState extends State<ChatScreen> {
     Map<String, dynamic> data = {
       'uId': user?.uid,
       'senderUser': user?.displayName,
-      'senderPhotoUrl': user?.photoURL
+      'senderPhotoUrl': user?.photoURL,
+      'time':Timestamp.now(),
     };
 
     //FirebaseStorage storage = FirebaseStorage.instance;
@@ -78,10 +80,16 @@ class _ChatScreenState extends State<ChatScreen> {
     if(imgFile != null) {
       final storageRef = FirebaseStorage.instance.ref();
 
-      final ref = storageRef.child(imgFile.path);
+      String? uid = "";
+      if(_user?.uid.toString() != null) {
+        uid = _user?.uid.toString();
+      }
+
+      final ref = storageRef.child(
+        DateTime.now().microsecondsSinceEpoch.toString() + uid!
+      );
 
       try {
-
         await ref.putFile(
             File(imgFile.path),
             SettableMetadata(customMetadata: {
@@ -89,7 +97,9 @@ class _ChatScreenState extends State<ChatScreen> {
               'description': 'Imagem...'
             }));
           // Refresh the UI
-          setState(() {});
+          setState(() {
+            _isLoading = true;
+          });
       } on FirebaseException catch (error) {
         if (kDebugMode) {
           print(error);
@@ -99,6 +109,10 @@ class _ChatScreenState extends State<ChatScreen> {
       String url = await ref.getDownloadURL();
 
       data['imgUrl'] = url;
+
+      setState(() {
+        _isLoading = false;
+      });
    }
 
    if(text != null) data['text'] = text;
@@ -135,7 +149,7 @@ class _ChatScreenState extends State<ChatScreen> {
         children: <Widget>[
           Expanded(
               child: StreamBuilder<QuerySnapshot>(
-                stream: FirebaseFirestore.instance.collection("message").snapshots(),
+                stream: FirebaseFirestore.instance.collection("message").orderBy("time").snapshots(),
                 builder: (context, snapshot) {
                   switch(snapshot.connectionState) {
                     case ConnectionState.none:
@@ -150,13 +164,17 @@ class _ChatScreenState extends State<ChatScreen> {
                         itemCount: documents.length,
                         reverse: true,
                         itemBuilder: (context, index) {
-                          return ChatMessage(documents[index].data() as Map<String, dynamic>, true);
+                          return ChatMessage(
+                              documents[index].data() as Map<String, dynamic>,
+                              true //documents[index].data['uId'] == _user?.uid,
+                          );
                         }
                       );
                   }
                 },
               )
           ),
+          _isLoading ? LinearProgressIndicator() : Container(),
           TextComposer(_sendMessage),
         ],
       ),
