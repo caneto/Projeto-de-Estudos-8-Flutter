@@ -127,7 +127,7 @@ class _ChatScreenState extends State<ChatScreen> {
       key: _globalKey,
       appBar: AppBar(
         title: Text(
-            _user != null ? 'Olá, ${_user?.displayName}' : 'Chat App'
+              _user != null ? 'Olá, ${_user?.displayName}' : 'Chat App'
         ),
         elevation: 0,
         actions: <Widget>[
