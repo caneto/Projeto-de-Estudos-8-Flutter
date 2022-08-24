@@ -1,16 +1,12 @@
-# chatonlinefirebase
+# Projeto 8 para Estudo do Flutter
 
-Chat Online Firebase
+Funcionalidade de Aprender o Basico do Flutter/Dart
 
-## Getting Started
+## Chat Online - Usando o Firebase e os componentes 
+###(cloud_firestore,google_sign_in,firebase_core,firebase_storage,firebase_auth,image_picker
 
-This project is a starting point for a Flutter application.
+#### Este projeto foi usado com o Curso do Professor (Daniel Ciolfi)
 
-A few resources to get you started if this is your first Flutter project:
+Se desejar ver este curso procure no link abaixo.
 
-- [Lab: Write your first Flutter app](https://docs.flutter.dev/get-started/codelab)
-- [Cookbook: Useful Flutter samples](https://docs.flutter.dev/cookbook)
-
-For help getting started with Flutter development, view the
-[online documentation](https://docs.flutter.dev/), which offers tutorials,
-samples, guidance on mobile development, and a full API reference.
+- [Curso Udemy: ](https://www.udemy.com/course/curso-completo-flutter-app-android-ios/)
